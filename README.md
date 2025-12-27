@@ -1,5 +1,7 @@
 # ZEN // CLEANER
 
+![ZEN CLEANER INTERFACE](https://i.imgur.com/vfm4VoU.png)
+
 ## // SYSTEM OVERVIEW
 
 **ZEN CLEANER** is an advanced desktop organization tool designed for automated file management and directory cleanup. It provides intelligent file sorting capabilities, custom rule protocols, and real-time system monitoring for efficient workspace organization.
