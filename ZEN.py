@@ -5,7 +5,7 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox
 from typing import List, Dict, Callable, Any
 
-# --- CONFIGURATION MANAGER ---
+# // CONFIGURATION MANAGER
 class ConfigManager:
     """
     Handles loading and saving configuration to config.json.
@@ -45,9 +45,9 @@ class ConfigManager:
         try:
             with open(ConfigManager.CONFIG_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                # Merge with defaults to ensure all keys exist (simple migration)
+                # // Merge with defaults to ensure all keys exist
                 config = ConfigManager.DEFAULT_CONFIG.copy()
-                # Deep update for dictionaries
+                # // Deep update for dictionaries
                 for key, value in data.items():
                     if isinstance(value, dict) and key in config and isinstance(config[key], dict):
                         config[key].update(value)
@@ -67,7 +67,7 @@ class ConfigManager:
             print(f"Error saving config: {e}")
 
 
-# --- LOGIC CLASS ---
+# // LOGIC CLASS
 class FileOrganizer:
     """
     Handles the core logic for file organization:
@@ -142,13 +142,13 @@ class FileOrganizer:
 
                 target_folder_name = None
 
-                # 1. Check Custom Rules
+                # // Check custom rules first (priority)
                 for rule in self.custom_rules:
                     if rule["keyword"].lower() in filename.lower():
                         target_folder_name = rule["target_folder"]
                         break
                 
-                # 2. Check Extension Rules
+                # // Check extension-based rules
                 if not target_folder_name:
                     name, ext = os.path.splitext(filename)
                     ext = ext.lower()
@@ -158,11 +158,11 @@ class FileOrganizer:
                             target_folder_name = category
                             break
                 
-                # 3. Check Unsorted Fallback
+                # // Check unsorted fallback
                 if not target_folder_name and self.enable_unsorted:
                     target_folder_name = "Unsorted"
 
-                # 4. Move file
+                # // Move file to target folder
                 if target_folder_name:
                     target_dir = os.path.join(source_path, target_folder_name)
                     
@@ -193,7 +193,7 @@ class FileOrganizer:
             log_callback(f"SYSTEM ERROR: {str(e)}")
 
 
-# --- DESIGN CONFIGURATION (The "Lumen" Style) ---
+# // DESIGN CONFIGURATION
 COL_BG_MAIN      = "#121212"
 COL_BG_PANEL     = "#1E1E1E"
 COL_ACCENT       = "#00E676"
@@ -217,7 +217,7 @@ class CustomMessagePopup(ctk.CTkToplevel):
         self.attributes("-topmost", True)
         self.resizable(False, False)
         
-        # Set icon
+        # // Set window icon
         icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
         if os.path.exists(icon_path):
             try:
@@ -225,18 +225,18 @@ class CustomMessagePopup(ctk.CTkToplevel):
             except Exception:
                 pass
         
-        # Determine colors based on type
+        # // Determine colors based on message type
         if msg_type == "error":
             accent_color = COL_ACCENT_SEC
             icon_text = "✗"
         elif msg_type == "warning":
             accent_color = "#FFA726"
             icon_text = "⚠"
-        else:  # info/success
+        else:
             accent_color = COL_ACCENT
             icon_text = "✓"
         
-        # Header
+        # // Header section
         header = ctk.CTkFrame(self, fg_color=COL_BG_PANEL, height=50)
         header.pack(fill="x", padx=0, pady=0)
         
@@ -257,7 +257,7 @@ class CustomMessagePopup(ctk.CTkToplevel):
             text_color=COL_TEXT_WHITE
         ).pack(side="left")
         
-        # Message
+        # // Message content
         msg_frame = ctk.CTkFrame(self, fg_color="transparent")
         msg_frame.pack(fill="both", expand=True, padx=20, pady=20)
         
@@ -270,7 +270,7 @@ class CustomMessagePopup(ctk.CTkToplevel):
             justify="left"
         ).pack(anchor="w", pady=10)
         
-        # Button
+        # // Action button
         btn_frame = ctk.CTkFrame(self, fg_color="transparent")
         btn_frame.pack(fill="x", padx=20, pady=(0, 20))
         
@@ -284,7 +284,7 @@ class CustomMessagePopup(ctk.CTkToplevel):
             width=100
         ).pack(side="right")
         
-        # Center window
+        # // Center window on screen
         self.update_idletasks()
         x = (self.winfo_screenwidth() // 2) - (self.winfo_width() // 2)
         y = (self.winfo_screenheight() // 2) - (self.winfo_height() // 2)
@@ -303,7 +303,7 @@ class SettingsPopup(ctk.CTkToplevel):
         self.configure(fg_color=COL_BG_MAIN)
         self.attributes("-topmost", True)
         
-        # Set icon
+        # // Set window icon
         icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
         if os.path.exists(icon_path):
             try:
@@ -314,10 +314,10 @@ class SettingsPopup(ctk.CTkToplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(3, weight=1)
 
-        # Header
+        # // Header section
         ctk.CTkLabel(self, text="EDIT EXTENSIONS", font=("Impact", 18), text_color=COL_TEXT_WHITE).pack(pady=15)
 
-        # Category Selection
+        # // Category selection dropdown
         self.cat_var = ctk.StringVar(value=list(organizer.extension_map.keys())[0])
         self.cat_dropdown = ctk.CTkOptionMenu(
             self, 
@@ -331,7 +331,7 @@ class SettingsPopup(ctk.CTkToplevel):
         )
         self.cat_dropdown.pack(fill="x", padx=20, pady=(0, 10))
 
-        # Add Extension Input
+        # // Extension input field
         input_frame = ctk.CTkFrame(self, fg_color="transparent")
         input_frame.pack(fill="x", padx=20, pady=5)
         
@@ -341,7 +341,7 @@ class SettingsPopup(ctk.CTkToplevel):
         self.btn_add = ctk.CTkButton(input_frame, text="+ ADD", width=60, fg_color=COL_ACCENT, hover_color=COL_ACCENT_HOVER, text_color=COL_BG_MAIN, command=self.add_extension)
         self.btn_add.pack(side="right")
 
-        # Extensions List Display
+        # // Extensions list display
         self.ext_textbox = ctk.CTkTextbox(self, fg_color=COL_BG_PANEL, text_color=COL_TEXT_GRAY, font=("Consolas", 12))
         self.ext_textbox.pack(fill="both", expand=True, padx=20, pady=20)
         
@@ -379,7 +379,7 @@ class UserSettingsPopup(ctk.CTkToplevel):
         
         self.grid_columnconfigure(0, weight=1)
         
-        # Set icon
+        # // Set window icon
         icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
         if os.path.exists(icon_path):
             try:
@@ -387,19 +387,19 @@ class UserSettingsPopup(ctk.CTkToplevel):
             except Exception:
                 pass
         
-        # Get current user settings
+        # // Get current user settings
         user_settings = self.organizer.config.get("user_settings", ConfigManager.DEFAULT_CONFIG["user_settings"])
         
-        # Header
+        # // Header section
         header = ctk.CTkFrame(self, fg_color=COL_BG_PANEL, height=60)
         header.pack(fill="x", padx=0, pady=0)
         ctk.CTkLabel(header, text="USER PREFERENCES", font=("Impact", 20), text_color=COL_ACCENT).pack(pady=15)
         
-        # Scrollable content
+        # // Scrollable content area
         scroll_frame = ctk.CTkScrollableFrame(self, fg_color="transparent")
         scroll_frame.pack(fill="both", expand=True, padx=20, pady=20)
         
-        # Default Path Setting
+        # // Default folder path setting
         path_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         path_frame.pack(fill="x", pady=10)
         path_inner = ctk.CTkFrame(path_frame, fg_color="transparent")
@@ -430,7 +430,7 @@ class UserSettingsPopup(ctk.CTkToplevel):
             command=self.browse_default_path
         ).pack(side="right")
         
-        # Log Font Size
+        # // Log font size setting
         font_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         font_frame.pack(fill="x", pady=10)
         font_inner = ctk.CTkFrame(font_frame, fg_color="transparent")
@@ -441,7 +441,7 @@ class UserSettingsPopup(ctk.CTkToplevel):
         self.font_size_entry.insert(0, str(user_settings.get("log_font_size", 11)))
         self.font_size_entry.pack(anchor="w")
         
-        # Auto Save
+        # // Auto-save setting
         autosave_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         autosave_frame.pack(fill="x", pady=10)
         autosave_inner = ctk.CTkFrame(autosave_frame, fg_color="transparent")
@@ -459,7 +459,7 @@ class UserSettingsPopup(ctk.CTkToplevel):
             hover_color=COL_ACCENT_HOVER
         ).pack(anchor="w")
         
-        # Buttons
+        # // Action buttons
         button_frame = ctk.CTkFrame(self, fg_color="transparent")
         button_frame.pack(fill="x", padx=20, pady=20)
         
@@ -532,35 +532,35 @@ class ZenCleanerApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # Logic Handler
+        # // Initialize file organizer
         self.organizer = FileOrganizer()
         
-        # Window Setup
+        # // Window setup
         self.title("ZEN // CLEANER")
         self.geometry("1100x850")
         self.configure(fg_color=COL_BG_MAIN)
         
-        # Set window icon (for window title bar and taskbar)
+        # // Set window icon for title bar and taskbar
         icon_path = os.path.join(os.path.dirname(__file__), "logo.ico")
         if os.path.exists(icon_path):
             try:
                 self.iconbitmap(icon_path)
             except Exception:
-                pass  # Icon loading failed, continue without icon
+                pass
 
-        # UI Layout
+        # // Create UI layout
         self._create_ui()
         
-        # Ensure icon is set after window is fully created (for Windows taskbar)
+        # // Ensure icon is set after window is fully created
         if os.path.exists(icon_path):
             self.after_idle(lambda: self._set_icon(icon_path))
 
     def _set_icon(self, icon_path):
         """Set window icon for taskbar (called after window is created)."""
         try:
-            # Set icon for window and taskbar
+            # // Set icon for window and taskbar
             self.iconbitmap(icon_path)
-            # Force update for Windows taskbar
+            # // Force update for Windows taskbar
             if hasattr(self, 'wm_iconbitmap'):
                 self.wm_iconbitmap(icon_path)
         except Exception:
@@ -574,18 +574,18 @@ class ZenCleanerApp(ctk.CTk):
         container = ctk.CTkFrame(parent, fg_color="transparent")
         container.pack(fill="x", pady=(0, 10))
         
-        # Colored bar
+        # // Colored vertical bar
         bar = ctk.CTkFrame(container, width=4, height=20, corner_radius=0, fg_color=icon_color)
         bar.pack(side="left", padx=(0, 10))
         
-        # Header text
+        # // Header text label
         label = ctk.CTkLabel(container, text=text.upper(), font=("Impact", 18), text_color=COL_TEXT_WHITE)
         label.pack(side="left")
         
         if right_widget:
             right_widget.pack(side="right", in_=container)
         
-        # Thin line below
+        # // Separator line below header
         line = ctk.CTkFrame(parent, height=1, fg_color=COL_BORDER)
         line.pack(fill="x", pady=(0, 15))
 
@@ -593,7 +593,7 @@ class ZenCleanerApp(ctk.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        # --- HEADER AREA ---
+        # // Header area
         self.header_frame = ctk.CTkFrame(self, fg_color=COL_BG_PANEL, corner_radius=0, height=80)
         self.header_frame.grid(row=0, column=0, sticky="ew", padx=0, pady=0)
         
@@ -603,7 +603,7 @@ class ZenCleanerApp(ctk.CTk):
         path_container = ctk.CTkFrame(self.header_frame, fg_color="transparent")
         path_container.pack(side="right", padx=30, fill="x", expand=True)
 
-        # Load default path from user settings
+        # // Load default path from user settings
         user_settings = self.organizer.config.get("user_settings", ConfigManager.DEFAULT_CONFIG["user_settings"])
         default_path = user_settings.get("default_path", os.path.join(os.path.expanduser("~"), "Downloads"))
         
@@ -631,7 +631,7 @@ class ZenCleanerApp(ctk.CTk):
         )
         self.btn_browse.pack(side="right")
         
-        # Settings button
+        # // Settings button
         self.btn_user_settings = ctk.CTkButton(
             path_container,
             text="[ SETTINGS ]",
@@ -645,14 +645,14 @@ class ZenCleanerApp(ctk.CTk):
         )
         self.btn_user_settings.pack(side="right", padx=(0, 10))
 
-        # --- MAIN CONTENT AREA ---
+        # // Main content area
         self.content_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.content_frame.grid(row=1, column=0, sticky="nsew", padx=30, pady=30)
         self.content_frame.grid_columnconfigure(0, weight=1)
         self.content_frame.grid_columnconfigure(1, weight=2)
         self.content_frame.grid_rowconfigure(0, weight=1)
 
-        # Create main view and settings view containers
+        # // Create main view and settings view containers
         self.main_view = ctk.CTkFrame(self.content_frame, fg_color="transparent")
         self.main_view.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.main_view.grid_columnconfigure(0, weight=1)
@@ -663,18 +663,18 @@ class ZenCleanerApp(ctk.CTk):
         self.settings_view.grid(row=0, column=0, columnspan=2, sticky="nsew")
         self.settings_view.grid_columnconfigure(0, weight=1)
         self.settings_view.grid_rowconfigure(0, weight=1)
-        self.settings_view.grid_remove()  # Hide initially
+        self.settings_view.grid_remove()
 
-        # LEFT COLUMN: CATEGORIES
+        # // Left column: categories panel
         self.left_panel = ctk.CTkFrame(self.main_view, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         self.left_panel.grid(row=0, column=0, sticky="nsew", padx=(0, 15))
         
         left_inner = ctk.CTkFrame(self.left_panel, fg_color="transparent")
         left_inner.pack(fill="both", expand=True, padx=20, pady=20)
 
-        # Header Button for Edit
+        # // Edit button for extension configuration
         btn_edit = ctk.CTkButton(
-            left_inner, # temp parent, repacked in header
+            left_inner,
             text="[ EDIT ]", 
             width=60, 
             height=20, 
@@ -688,7 +688,7 @@ class ZenCleanerApp(ctk.CTk):
         )
         self._create_section_header(left_inner, "SYSTEM TARGETS", COL_ACCENT, right_widget=btn_edit)
 
-        # Category Checkboxes
+        # // Category checkboxes
         self.check_vars = {}
         for cat in self.organizer.extension_map.keys():
             var = ctk.BooleanVar(value=self.organizer.enabled_categories.get(cat, True))
@@ -706,7 +706,7 @@ class ZenCleanerApp(ctk.CTk):
             )
             chk.pack(anchor="w", pady=8)
 
-        # Unsorted Checkbox (Separator first)
+        # // Unsorted files checkbox
         ctk.CTkFrame(left_inner, height=1, fg_color=COL_BORDER).pack(fill="x", pady=15)
         
         self.unsorted_var = ctk.BooleanVar(value=self.organizer.enable_unsorted)
@@ -718,16 +718,16 @@ class ZenCleanerApp(ctk.CTk):
             text_color=COL_TEXT_WHITE,
             fg_color=COL_ACCENT_SEC,
             checkmark_color=COL_BG_MAIN,
-            hover_color=COL_ACCENT_SEC, # Pink hover
+            hover_color=COL_ACCENT_SEC,
             command=lambda: self.organizer.set_unsorted_enabled(self.unsorted_var.get())
         )
         chk_unsorted.pack(anchor="w", pady=8)
 
-        # RIGHT COLUMN: RULES & LOG
+        # // Right column: rules and log panel
         self.right_panel = ctk.CTkFrame(self.main_view, fg_color="transparent")
         self.right_panel.grid(row=0, column=1, sticky="nsew")
 
-        # -- RULES SECTION --
+        # // Rules section
         self.rules_container = ctk.CTkFrame(self.right_panel, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER, height=200)
         self.rules_container.pack(fill="x", pady=(0, 15))
         
@@ -757,14 +757,14 @@ class ZenCleanerApp(ctk.CTk):
         self.rules_list_frame.pack(fill="x")
         self.refresh_rules_list()
 
-        # -- LOG / STATUS SECTION --
+        # // Log and status section
         self.log_container = ctk.CTkFrame(self.right_panel, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         self.log_container.pack(fill="both", expand=True)
         
         log_inner = ctk.CTkFrame(self.log_container, fg_color="transparent")
         log_inner.pack(fill="both", padx=20, pady=20)
 
-        # Info note about undo
+        # // Info note about settings undo
         info_frame = ctk.CTkFrame(log_inner, fg_color=COL_INPUT_BG, border_width=1, border_color=COL_BORDER)
         info_frame.pack(fill="x", pady=(0, 10))
         info_inner = ctk.CTkFrame(info_frame, fg_color="transparent")
@@ -788,7 +788,7 @@ class ZenCleanerApp(ctk.CTk):
 
         self._create_section_header(log_inner, "SYSTEM LOG", COL_TEXT_GRAY)
 
-        # Load font size from user settings
+        # // Load font size from user settings
         user_settings = self.organizer.config.get("user_settings", ConfigManager.DEFAULT_CONFIG["user_settings"])
         log_font_size = user_settings.get("log_font_size", 11)
         
@@ -801,7 +801,7 @@ class ZenCleanerApp(ctk.CTk):
         )
         self.log_box.pack(fill="both", expand=True)
 
-        # --- FOOTER / ACTION AREA ---
+        # // Footer action area
         self.footer = ctk.CTkFrame(self, fg_color=COL_BG_PANEL, height=80, corner_radius=0)
         self.footer.grid(row=2, column=0, sticky="ew")
 
@@ -822,17 +822,17 @@ class ZenCleanerApp(ctk.CTk):
         )
         self.btn_clean.pack(side="right", padx=30, pady=15)
 
-        # Create settings view
+        # // Create settings view
         self._create_settings_view()
 
     def _create_settings_view(self):
         """Create the integrated settings view."""
-        # Container (no scrollbar)
+        # // Settings container
         scroll_frame = ctk.CTkFrame(self.settings_view, fg_color="transparent")
         scroll_frame.grid(row=0, column=0, sticky="nsew", padx=30, pady=30)
         scroll_frame.grid_columnconfigure(0, weight=1)
 
-        # Header with back button
+        # // Header with back button
         header_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, height=60)
         header_frame.pack(fill="x", pady=(0, 20))
         header_inner = ctk.CTkFrame(header_frame, fg_color="transparent")
@@ -857,10 +857,10 @@ class ZenCleanerApp(ctk.CTk):
             text_color=COL_ACCENT
         ).pack(side="left", padx=20)
 
-        # Get current user settings
+        # // Get current user settings
         user_settings = self.organizer.config.get("user_settings", ConfigManager.DEFAULT_CONFIG["user_settings"])
 
-        # Default Path Setting
+        # // Default folder path setting
         path_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         path_frame.pack(fill="x", pady=10)
         path_inner = ctk.CTkFrame(path_frame, fg_color="transparent")
@@ -892,7 +892,7 @@ class ZenCleanerApp(ctk.CTk):
             command=self.browse_settings_path
         ).pack(side="right")
 
-        # Log Font Size
+        # // Log font size setting
         font_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         font_frame.pack(fill="x", pady=10)
         font_inner = ctk.CTkFrame(font_frame, fg_color="transparent")
@@ -911,7 +911,7 @@ class ZenCleanerApp(ctk.CTk):
         self.settings_font_size_entry.insert(0, str(user_settings.get("log_font_size", 11)))
         self.settings_font_size_entry.pack(anchor="w")
 
-        # Auto Save
+        # // Auto-save setting
         autosave_frame = ctk.CTkFrame(scroll_frame, fg_color=COL_BG_PANEL, border_width=1, border_color=COL_BORDER)
         autosave_frame.pack(fill="x", pady=10)
         autosave_inner = ctk.CTkFrame(autosave_frame, fg_color="transparent")
@@ -929,7 +929,7 @@ class ZenCleanerApp(ctk.CTk):
             hover_color=COL_ACCENT_HOVER
         ).pack(anchor="w")
 
-        # Save and Revert Buttons
+        # // Save and revert buttons
         button_frame = ctk.CTkFrame(scroll_frame, fg_color="transparent")
         button_frame.pack(fill="x", pady=20)
 
@@ -973,7 +973,7 @@ class ZenCleanerApp(ctk.CTk):
         """Switch to settings view."""
         self.main_view.grid_remove()
         self.settings_view.grid()
-        # Refresh settings values
+        # // Refresh settings values
         user_settings = self.organizer.config.get("user_settings", ConfigManager.DEFAULT_CONFIG["user_settings"])
         self.settings_path_entry.delete(0, "end")
         self.settings_path_entry.insert(0, user_settings.get("default_path", ""))
@@ -985,7 +985,7 @@ class ZenCleanerApp(ctk.CTk):
         """Revert all settings to default values."""
         default_settings = ConfigManager.DEFAULT_CONFIG["user_settings"]
         
-        # Update UI fields
+        # // Update UI fields
         self.settings_path_entry.delete(0, "end")
         self.settings_path_entry.insert(0, default_settings["default_path"])
         
@@ -994,14 +994,14 @@ class ZenCleanerApp(ctk.CTk):
         
         self.settings_autosave_var.set(default_settings["auto_save"])
         
-        # Save to config
+        # // Save to config
         self.organizer.config["user_settings"] = default_settings.copy()
         ConfigManager.save_config(self.organizer.config)
         
-        # Apply changes immediately
+        # // Apply changes immediately
         self.log_box.configure(font=("Consolas", default_settings["log_font_size"]))
         
-        # Update main path entry if needed
+        # // Update main path entry if needed
         if self.path_entry.get() != default_settings["default_path"]:
             self.path_entry.delete(0, "end")
             self.path_entry.insert(0, default_settings["default_path"])
@@ -1017,7 +1017,7 @@ class ZenCleanerApp(ctk.CTk):
                 "auto_save": self.settings_autosave_var.get()
             }
 
-            # Validate inputs
+            # // Validate inputs
             if not os.path.exists(user_settings["default_path"]):
                 CustomMessagePopup(self, "Error", "Default path does not exist!", "error")
                 return
@@ -1026,14 +1026,14 @@ class ZenCleanerApp(ctk.CTk):
                 CustomMessagePopup(self, "Error", "Font size must be between 8 and 20!", "error")
                 return
 
-            # Save to config
+            # // Save to config
             self.organizer.config["user_settings"] = user_settings
             ConfigManager.save_config(self.organizer.config)
 
-            # Apply font size to log box
+            # // Apply font size to log box
             self.log_box.configure(font=("Consolas", user_settings["log_font_size"]))
 
-            # Update default path in entry if it's still the old default
+            # // Update default path in entry if it's still the old default
             if self.path_entry.get() == os.path.join(os.path.expanduser("~"), "Downloads"):
                 self.path_entry.delete(0, "end")
                 self.path_entry.insert(0, user_settings["default_path"])

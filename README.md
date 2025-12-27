@@ -1,10 +1,8 @@
 # ZEN // CLEANER
 
-![ZEN CLEANER INTERFACE](https://i.imgur.com/placeholder.png)
-
 ## // SYSTEM OVERVIEW
 
-**ZEN CLEANER** is an advanced desktop organization tool designed for automated file management and directory cleanup. It provides users with intelligent file sorting capabilities, custom rule protocols, and real-time system monitoring for efficient workspace organization.
+**ZEN CLEANER** is an advanced desktop organization tool designed for automated file management and directory cleanup. It provides intelligent file sorting capabilities, custom rule protocols, and real-time system monitoring for efficient workspace organization.
 
 This software operates locally on your system, automatically organizing files based on extension mapping, custom keyword rules, and user-defined preferences without requiring network connectivity.
 
@@ -14,28 +12,31 @@ This software operates locally on your system, automatically organizing files ba
 
 ## // SECURITY & ANTIVIRUS NOTE
 
-> **FALSE POSITIVE WARNING:** Some antivirus software may flag `ZEN.exe` or `ZEN.py` as generic malware.
+> **FALSE POSITIVE WARNING:** Security scans may flag `ZEN.exe` as potentially malicious.
 
-**This is a known false positive caused by PyInstaller (if compiled) or Python script heuristics.**
-Because this tool operates on local file systems and performs file operations, some security engines may misidentify it.
+**This is a known false positive caused by PyInstaller packaging.**
+VirusTotal analysis shows **5/72 security vendors** flagging the executable, which is typical for PyInstaller-compiled applications without code signing certificates.
 
-* **VERIFICATION:** The full source code is available in this repository (`ZEN.py`) for inspection.
-* **ACTION:** If your antivirus blocks the file, please add an **Exclusion/Exception** for the application directory.
-* **SAFETY:** This tool operates entirely locally and makes no network connections. All file operations are performed on your local machine.
+**Verification & Safety:**
+* **FULL SOURCE CODE AVAILABLE:** The complete source code (`ZEN.py`) is available in this repository for inspection
+* **NO NETWORK ACTIVITY:** This tool operates entirely locally and makes zero network connections
+* **OPEN SOURCE:** You can review, modify, and compile the code yourself if you prefer
+* **ACTION REQUIRED:** If your antivirus blocks the file, add an **Exclusion/Exception** for `ZEN.exe` or the application directory
+
+**Note:** 67/72 security vendors report the file as clean/undetected. The flagged detections are generic heuristics, not specific malware signatures.
 
 ---
 
 ## // OPERATIONAL CAPABILITIES
 
-### [ 1 ] AUTOMATED FILE ORGANIZATION
-Intelligent file sorting based on extension mapping and custom protocols.
-* **EXTENSION-BASED SORTING:** Automatically categorizes files by type (Images, Documents, Audio, Video, Archives, Developer files, Installers).
-* **CUSTOM KEYWORD RULES:** Create custom protocols that move files containing specific keywords to designated folders.
-* **PRIORITY SYSTEM:** Custom rules take precedence over extension-based sorting for precise control.
-* **DUPLICATE HANDLING:** Automatic filename conflict resolution with incremental numbering.
+### AUTOMATED FILE ORGANIZATION
+* **EXTENSION-BASED SORTING:** Automatically categorizes files by type (Images, Documents, Audio, Video, Archives, Developer files, Installers)
+* **CUSTOM KEYWORD RULES:** Create custom protocols that move files containing specific keywords to designated folders
+* **PRIORITY SYSTEM:** Custom rules take precedence over extension-based sorting
+* **DUPLICATE HANDLING:** Automatic filename conflict resolution with incremental numbering
 
-### [ 2 ] CATEGORY MANAGEMENT
-Flexible category system with enable/disable toggles for each file type.
+### CATEGORY MANAGEMENT
+Flexible category system with enable/disable toggles for each file type:
 * **IMAGES:** JPG, PNG, GIF, BMP, SVG, PSD, AI, EPS, WebP, TIFF, ICO
 * **DOCUMENTS:** PDF, DOCX, DOC, TXT, XLSX, PPTX, ODT, RTF, CSV, XLS
 * **INSTALLERS:** EXE, MSI, DMG, PKG, DEB, RPM
@@ -44,64 +45,32 @@ Flexible category system with enable/disable toggles for each file type.
 * **ARCHIVES:** ZIP, RAR, 7Z, TAR, GZ, BZ2, XZ
 * **DEVELOPER:** PY, JS, JSON, HTML, CSS, Java, C++, TS, TSX, JSX, PHP, Ruby, Go, Rust
 
-### [ 3 ] CUSTOM PROTOCOLS
-Advanced rule-based file organization system.
-* **KEYWORD MATCHING:** Files containing specified keywords are moved to custom folders.
-* **CASE-INSENSITIVE:** Rules work regardless of filename capitalization.
-* **MULTIPLE RULES:** Create unlimited custom rules for different file patterns.
-* **RULE MANAGEMENT:** Add, view, and delete custom rules with intuitive interface.
+### CUSTOM PROTOCOLS
+* **KEYWORD MATCHING:** Files containing specified keywords are moved to custom folders
+* **CASE-INSENSITIVE:** Rules work regardless of filename capitalization
+* **MULTIPLE RULES:** Create unlimited custom rules for different file patterns
 
-### [ 4 ] UNSORTED FILE HANDLING
-Optional fallback system for files that don't match any rules.
-* **UNSORTED FOLDER:** Enable automatic moving of unmatched files to "Unsorted" folder.
-* **TOGGLE CONTROL:** Enable or disable unsorted file handling as needed.
+### EXTENSION CONFIGURATION
+Add new file extensions to existing categories via the extension editor.
 
-### [ 5 ] EXTENSION CONFIGURATION
-Customize file type associations for each category.
-* **EXTENSION EDITOR:** Add new file extensions to existing categories via Settings.
-* **CATEGORY SELECTOR:** Choose which category to modify from dropdown menu.
-* **REAL-TIME UPDATES:** Changes are saved immediately to configuration.
-
-### [ 6 ] USER PREFERENCES
-Comprehensive settings management system.
-* **DEFAULT FOLDER PATH:** Set default target directory for file operations.
-* **LOG FONT SIZE:** Adjust system log display font size (8-20px).
-* **AUTO-SAVE:** Automatic configuration persistence.
-* **REVERT TO DEFAULTS:** One-click restoration of all settings to factory defaults.
-
-### [ 7 ] SYSTEM LOG
-Real-time operation monitoring and feedback.
-* **LIVE LOGGING:** See every file operation as it happens.
-* **STATUS UPDATES:** Track moved files, errors, and completion status.
-* **SCROLLABLE HISTORY:** Review past operations in scrollable log window.
-* **CUSTOMIZABLE DISPLAY:** Adjustable font size for optimal readability.
-
----
-
-## // VISUAL INTELLIGENCE
-
-### **INTERFACE: ZEN ELITE UI**
-Custom-engineered GUI with dark theme aesthetic featuring:
-* **LUMEN-STYLE DESIGN:** Modern dark interface with accent colors
-* **CLEAR VISUAL HIERARCHY:** Organized sections with distinct headers
-* **REAL-TIME FEEDBACK:** Live system log with color-coded status messages
-* **INTUITIVE NAVIGATION:** Seamless switching between main view and settings
+### USER PREFERENCES
+* **DEFAULT FOLDER PATH:** Set default target directory for file operations
+* **AUTO-SAVE:** Automatic configuration persistence
+* **REVERT TO DEFAULTS:** One-click restoration of all settings to factory defaults
 
 ---
 
 ## // DEPLOYMENT INSTRUCTIONS
 
 ### **EXECUTABLE LAUNCH (RECOMMENDED)**
-1. Download the latest **`ZEN.exe`** release (if available).
-2. Run **`ZEN.exe`** - no Python installation required.
-3. The application will start immediately.
-
-> **NOTE:** This application is **open source**. You can use the pre-built `.exe` file for convenience, or run the Python source code directly if you prefer.
+1. Download the latest **`ZEN.exe`** release (if available)
+2. Run **`ZEN.exe`** - no Python installation required
+3. The application will start immediately
 
 ### **PYTHON SCRIPT LAUNCH (OPEN SOURCE)**
 The full source code is available in `ZEN.py` for inspection and modification.
 
-1. Ensure Python 3.7+ is installed on your system.
+1. Ensure Python 3.7+ is installed on your system
 2. Install required dependencies:
    ```bash
    pip install -r requirements.txt
@@ -112,33 +81,18 @@ The full source code is available in `ZEN.py` for inspection and modification.
    ```
 
 ### **BUILDING YOUR OWN EXECUTABLE**
-See `BUILD_INSTRUCTIONS.md` for detailed instructions on creating an executable from the source code.
-
 **Quick Build (Windows):**
 1. Install dependencies: `pip install -r requirements.txt`
 2. Run: `build_exe.bat`
 3. Find `ZEN.exe` in the `dist` folder
 
+
 ### **USAGE WORKFLOW**
-1. **SELECT TARGET FOLDER:** Use the path entry or browse button to select the directory you want to organize.
-2. **CONFIGURE CATEGORIES:** Enable/disable file type categories using the checkboxes in the left panel.
-3. **ADD CUSTOM RULES (OPTIONAL):** Create keyword-based rules in the "CUSTOM PROTOCOLS" section.
-4. **REVIEW SETTINGS:** Access Settings via the header button to configure default paths and preferences.
-5. **INITIALIZE CLEANUP:** Click "[ INITIALIZE CLEANUP ]" to start the organization process.
-6. **MONITOR PROGRESS:** Watch the system log for real-time operation feedback.
-
-### **SETTINGS CONFIGURATION**
-Access settings via the **[ SETTINGS ]** button in the header:
-* **Default Folder Path:** Set the default target directory for file operations.
-* **Log Font Size:** Adjust the system log display size (8-20px range).
-* **Auto Save:** Enable automatic configuration persistence.
-* **Revert to Defaults:** Restore all settings to factory defaults.
-
-### **EXTENSION MANAGEMENT**
-1. Click **[ EDIT ]** button next to "SYSTEM TARGETS" in the left panel.
-2. Select a category from the dropdown menu.
-3. Enter a new extension (with or without dot prefix).
-4. Click **[ + ADD ]** to add the extension to the selected category.
+1. Select target folder to organize
+2. Configure categories (enable/disable file types)
+3. Add custom rules (optional) for keyword-based sorting
+4. Initialize cleanup to start the organization process
+5. Monitor progress in the system log
 
 ---
 
@@ -146,10 +100,10 @@ Access settings via the **[ SETTINGS ]** button in the header:
 
 | ERROR MESSAGE | CAUSE | SOLUTION |
 | :--- | :--- | :--- |
-| **"ERROR: PATH NOT FOUND"** | The selected directory does not exist. | Verify the path is correct and the directory exists. Use the browse button to select a valid folder. |
-| **"ERROR: NO PATH SELECTED"** | No target folder has been specified. | Enter a valid folder path in the path entry field or use the browse button. |
-| **"NO MATCHING FILES FOUND"** | No files in the directory match the enabled categories or rules. | Check that categories are enabled and verify file extensions match configured types. |
-| **"SYSTEM ERROR"** | An unexpected error occurred during file operations. | Check file permissions, ensure files aren't locked by other applications, and verify disk space. |
+| **"ERROR: PATH NOT FOUND"** | The selected directory does not exist | Verify the path is correct and the directory exists |
+| **"ERROR: NO PATH SELECTED"** | No target folder has been specified | Enter a valid folder path |
+| **"NO MATCHING FILES FOUND"** | No files match the enabled categories or rules | Check that categories are enabled and verify file extensions match configured types |
+| **"SYSTEM ERROR"** | An unexpected error occurred | Check file permissions, ensure files aren't locked by other applications, and verify disk space |
 
 ---
 
@@ -165,10 +119,10 @@ Access settings via the **[ SETTINGS ]** button in the header:
 * `logo.ico`: Application icon file
 
 ### **FILE OPERATIONS**
-* **SAFE MOVING:** Files are moved (not copied) to preserve disk space
-* **DUPLICATE PROTECTION:** Automatic filename conflict resolution
-* **DIRECTORY CREATION:** Target folders are created automatically if they don't exist
-* **ERROR HANDLING:** Comprehensive error catching and logging
+* Files are moved (not copied) to preserve disk space
+* Automatic filename conflict resolution
+* Target folders are created automatically if they don't exist
+* Comprehensive error catching and logging
 
 ---
 
@@ -192,7 +146,4 @@ Access settings via the **[ SETTINGS ]** button in the header:
 ✅ **Real-Time Logging** - Monitor operations as they happen  
 ✅ **Settings Management** - Customize default paths and preferences  
 ✅ **Revert to Defaults** - Restore factory settings with one click  
-✅ **Modern UI** - Dark theme interface with intuitive design  
-✅ **Windows Taskbar Icon** - Proper icon display in Windows taskbar  
 ✅ **No Network Required** - Fully local operation
-

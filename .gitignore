@@ -1,0 +1,17 @@
+# Ignore everything by default
+*
+
+# But allow these specific files and directories
+!README.md
+!ZEN.py
+!LICENSE
+!.gitignore
+
+# Allow the dist directory and ZEN.exe inside it
+!dist/
+!dist/ZEN.exe
+
+# Ignore everything else in dist
+dist/*
+!dist/ZEN.exe
+
